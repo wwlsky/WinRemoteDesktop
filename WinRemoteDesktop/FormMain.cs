@@ -32,7 +32,7 @@ namespace WinRemoteDesktop
             form.Size = new Size(1024, 768);
 
             Rectangle ScreenArea = Screen.PrimaryScreen.Bounds;
-            AxMsRdpClient9NotSafeForScripting axMsRdpc = new AxMsRdpClient9NotSafeForScripting();
+            AxMsRdpClient7NotSafeForScripting axMsRdpc = new AxMsRdpClient7NotSafeForScripting();
             ((System.ComponentModel.ISupportInitialize)(axMsRdpc)).BeginInit();
             axMsRdpc.Dock = DockStyle.Fill;
             axMsRdpc.Enabled = true;
@@ -51,13 +51,13 @@ namespace WinRemoteDesktop
             // 远程登录账号
             axMsRdpc.UserName = args[1];
             // 远程端口号
-            axMsRdpc.AdvancedSettings9.RDPPort = ServerIps.Length == 1 ? 3389 : Convert.ToInt32(ServerIps[1]);
+            axMsRdpc.AdvancedSettings7.RDPPort = ServerIps.Length == 1 ? 3389 : Convert.ToInt32(ServerIps[1]);
             // 自动控制屏幕显示尺寸
             //axMsRdpc.AdvancedSettings9.SmartSizing = true;
             // 启用CredSSP身份验证（有些服务器连接没有反应，需要开启这个）
-            axMsRdpc.AdvancedSettings9.EnableCredSspSupport = true;
+            axMsRdpc.AdvancedSettings7.EnableCredSspSupport = true;
             // 远程登录密码
-            axMsRdpc.AdvancedSettings9.ClearTextPassword = args[2];
+            axMsRdpc.AdvancedSettings7.ClearTextPassword = args[2];
             // 颜色位数 8,16,24,32
             axMsRdpc.ColorDepth = 32;
             // 开启全屏 true|flase
@@ -268,13 +268,13 @@ namespace WinRemoteDesktop
 
         private void axMsRdpc_OnConnecting(object sender, EventArgs e)
         {
-            AxMsRdpClient9NotSafeForScripting axMsRdpc = (AxMsRdpClient9NotSafeForScripting)sender;
+            AxMsRdpClient7NotSafeForScripting axMsRdpc = (AxMsRdpClient7NotSafeForScripting)sender;
             axMsRdpc.ConnectingText = axMsRdpc.GetStatusText(Convert.ToUInt32(axMsRdpc.Connected));
         }
 
         private void axMsRdpc_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            AxMsRdpClient9NotSafeForScripting axMsRdpc = (AxMsRdpClient9NotSafeForScripting)sender;
+            AxMsRdpClient7NotSafeForScripting axMsRdpc = (AxMsRdpClient7NotSafeForScripting)sender;
             axMsRdpc.DisconnectedText = "连接失败，连接已断开！请关闭重试！";
         }
     }

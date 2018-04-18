@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-  </PropertyGroup>  
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterListViewExpress">
       <HintPath>..\..\..\Lib\BetterListViewExpress.dll</HintPath>
