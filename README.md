@@ -6,7 +6,7 @@ C# .Net Framework 4.0 开发的一款简易远程桌面管理工具
 - 可同时连接多台远程服务器
 - 托盘最小化
 
-![软件首页](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/Images/Mian.png)
+![软件首页](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/Images/Main.png)
 ![添加服务器](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/Images/AddDesktop.png)
 
 > 软件下载
