@@ -54,7 +54,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 12);
             this.label1.TabIndex = 1;
-            this.label1.Text = "简易远程桌面工具 v1.0.0";
+            this.label1.Text = "简易远程桌面工具 v1.1.0";
             // 
             // label3
             // 

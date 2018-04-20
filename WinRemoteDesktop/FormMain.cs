@@ -1,6 +1,7 @@
 ﻿using AxMSTSCLib;
 using ComponentOwl.BetterListView;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,11 +10,14 @@ namespace WinRemoteDesktop
 {
     public partial class FormMain : Form
     {
+        private AxMsRdpClient7NotSafeForScripting axMsRdpc = null;
         private bool isFullScreen = false;
+        private List<string> axMsRdpcArray = null;
 
         public FormMain()
         {
             InitializeComponent();
+            axMsRdpcArray = new List<string>();
         }
 
         /// <summary>
@@ -24,28 +28,42 @@ namespace WinRemoteDesktop
         {
             string[] ServerIps = args[0].Split(':');
 
-            Form form = new Form();
-            form.ShowIcon = false;
-            //form.StartPosition = FormStartPosition.Manual;
-            form.Name = ServerIps[0].Replace(".", "");
-            form.Text = string.Format("{0} ({1})", args[3], ServerIps[0]);
-            form.Size = new Size(1024, 768);
+            Form axMsRdpcForm = new Form();
+            axMsRdpcForm.ShowIcon = false;
+            //axMsRdpcForm.StartPosition = FormStartPosition.Manual;
+            axMsRdpcForm.Name = string.Format("Form_{0}", ServerIps[0].Replace(".", ""));
+            axMsRdpcForm.Text = string.Format("{0} ({1})", args[3], ServerIps[0]);
+            axMsRdpcForm.Size = new Size(1024, 768);
+            axMsRdpcForm.FormClosed += new FormClosedEventHandler(this.axMsRdpcForm_Closed);
 
             Rectangle ScreenArea = Screen.PrimaryScreen.Bounds;
-            AxMsRdpClient7NotSafeForScripting axMsRdpc = new AxMsRdpClient7NotSafeForScripting();
+            // 给axMsRdpc取个名字
+            string _axMsRdpcName = string.Format("axMsRdpc_{0}", ServerIps[0].Replace(".", ""));
+            if (axMsRdpcArray.Contains(_axMsRdpcName))
+            {
+                Global.WinMessage("此远程已经连接，请勿重复连接！"); return;
+            }
+            else
+            {
+                axMsRdpc = new AxMsRdpClient7NotSafeForScripting();
+            }
+            // 添加到当前缓存
+            axMsRdpcArray.Add(_axMsRdpcName);
+
             ((System.ComponentModel.ISupportInitialize)(axMsRdpc)).BeginInit();
             axMsRdpc.Dock = DockStyle.Fill;
             axMsRdpc.Enabled = true;
-            axMsRdpc.Name = string.Format("axMsRdpc_{0}", ServerIps[0].Replace(".", ""));
 
             // 绑定连接与释放事件
             axMsRdpc.OnConnecting += new EventHandler(this.axMsRdpc_OnConnecting);
             axMsRdpc.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.axMsRdpc_OnDisconnected);
 
-            form.Controls.Add(axMsRdpc);
-            form.Show();
+            axMsRdpcForm.Controls.Add(axMsRdpc);
+            axMsRdpcForm.Show();
             ((System.ComponentModel.ISupportInitialize)(axMsRdpc)).EndInit();
 
+            // RDP名字
+            axMsRdpc.Name = _axMsRdpcName;
             // 服务器地址
             axMsRdpc.Server = ServerIps[0];
             // 远程登录账号
@@ -268,14 +286,32 @@ namespace WinRemoteDesktop
 
         private void axMsRdpc_OnConnecting(object sender, EventArgs e)
         {
-            AxMsRdpClient7NotSafeForScripting axMsRdpc = (AxMsRdpClient7NotSafeForScripting)sender;
             axMsRdpc.ConnectingText = axMsRdpc.GetStatusText(Convert.ToUInt32(axMsRdpc.Connected));
         }
 
         private void axMsRdpc_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            AxMsRdpClient7NotSafeForScripting axMsRdpc = (AxMsRdpClient7NotSafeForScripting)sender;
-            axMsRdpc.DisconnectedText = "连接失败，连接已断开！请关闭重试！";
+            axMsRdpc.DisconnectedText = "连接已断开！";
+        }
+
+        private void axMsRdpcForm_Closed(object sender, FormClosedEventArgs e)
+        {
+            Form frm = (Form)sender;
+            //MessageBox.Show(frm.Controls[0].GetType().ToString());
+            foreach (Control ctrl in frm.Controls)
+            {
+                //MessageBox.Show((ctrl as AxMSTSCLib.AxMsRdpClient7NotSafeForScripting).Connected.ToString());
+                if (ctrl.GetType().ToString() == "AxMSTSCLib.AxMsRdpClient7NotSafeForScripting")
+                {
+                    // 释放缓存
+                    if (axMsRdpcArray.Contains(ctrl.Name)) axMsRdpcArray.Remove(ctrl.Name);
+                    // 断开连接
+                    if ((ctrl as AxMsRdpClient7NotSafeForScripting).Connected != 0)
+                    {
+                        (ctrl as AxMsRdpClient7NotSafeForScripting).Disconnect();
+                    }
+                }
+            }
         }
     }
 }

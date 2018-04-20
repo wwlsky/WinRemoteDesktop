@@ -14,11 +14,6 @@ namespace WinRemoteDesktop
             InitializeComponent();
         }
 
-        private void WinMessage(string msg)
-        {
-            MessageBox.Show(msg, "操作提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void FormRemote_Load(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_Action) || string.IsNullOrWhiteSpace(_ServerIp)) return;
@@ -43,12 +38,12 @@ namespace WinRemoteDesktop
 
             if (string.IsNullOrWhiteSpace(ServerIp))
             {
-                WinMessage("请输入服务器地址!");
+                Global.WinMessage("请输入服务器地址!");
                 return;
             }
             if (string.IsNullOrWhiteSpace(UserName))
             {
-                WinMessage("请输入远程账号!");
+                Global.WinMessage("请输入远程账号!");
                 return;
             }
 

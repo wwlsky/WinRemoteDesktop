@@ -43,6 +43,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbFullScreen = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsItemLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.betterListView1 = new ComponentOwl.BetterListView.BetterListView();
             this.chServerIp = new ComponentOwl.BetterListView.BetterListViewColumnHeader();
@@ -54,13 +55,12 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsMenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMenuDel = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsMenuNotifyShow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsMenuNotifyExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.tsMsg = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.betterListView1)).BeginInit();
@@ -194,6 +194,14 @@
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // tsMsg
+            // 
+            this.tsMsg.Name = "tsMsg";
+            this.tsMsg.Size = new System.Drawing.Size(402, 17);
+            this.tsMsg.Spring = true;
+            this.tsMsg.Text = "开发者：502832965@qq.com";
+            this.tsMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // tsItemLabel
             // 
             this.tsItemLabel.Name = "tsItemLabel";
@@ -280,6 +288,12 @@
             this.tsMenuDel.Text = "删除";
             this.tsMenuDel.Click += new System.EventHandler(this.tsMenuDel_Click);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "eye-shown.png");
+            // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip2;
@@ -316,20 +330,6 @@
             this.tsMenuNotifyExit.Size = new System.Drawing.Size(100, 22);
             this.tsMenuNotifyExit.Text = "退出";
             this.tsMenuNotifyExit.Click += new System.EventHandler(this.tsMenuNotifyExit_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "eye-shown.png");
-            // 
-            // tsMsg
-            // 
-            this.tsMsg.Name = "tsMsg";
-            this.tsMsg.Size = new System.Drawing.Size(371, 17);
-            this.tsMsg.Spring = true;
-            this.tsMsg.Text = "开发者：502832965@qq.com";
-            this.tsMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormMain
             // 
