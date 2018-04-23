@@ -38,9 +38,7 @@
             this.tsbEdit = new System.Windows.Forms.ToolStripButton();
             this.tsbDel = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbRefresh = new System.Windows.Forms.ToolStripButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbFullScreen = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsMsg = new System.Windows.Forms.ToolStripStatusLabel();
@@ -78,9 +76,7 @@
             this.tsbEdit,
             this.tsbDel,
             this.toolStripSeparator3,
-            this.tsbRefresh,
             this.tsbAbout,
-            this.toolStripSeparator4,
             this.tsbFullScreen});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -146,16 +142,6 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbRefresh
-            // 
-            this.tsbRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRefresh.Image = ((System.Drawing.Image)(resources.GetObject("tsbRefresh.Image")));
-            this.tsbRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRefresh.Name = "tsbRefresh";
-            this.tsbRefresh.Size = new System.Drawing.Size(23, 22);
-            this.tsbRefresh.Text = "刷新";
-            this.tsbRefresh.Click += new System.EventHandler(this.tsbRefresh_Click);
-            // 
             // tsbAbout
             // 
             this.tsbAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -166,11 +152,6 @@
             this.tsbAbout.Size = new System.Drawing.Size(23, 22);
             this.tsbAbout.Text = "关于";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbFullScreen
             // 
@@ -377,10 +358,8 @@
         private System.Windows.Forms.ToolStripButton tsbAddData;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private ComponentOwl.BetterListView.BetterListView betterListView1;
-        private System.Windows.Forms.ToolStripButton tsbRefresh;
         private System.Windows.Forms.ToolStripButton tsbAbout;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton tsbFullScreen;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;

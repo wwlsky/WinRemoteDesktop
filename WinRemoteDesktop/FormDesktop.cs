@@ -58,6 +58,7 @@ namespace WinRemoteDesktop
             {
                 new TXTClass().txtWrite(Global.dbFile, data);
             }
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 

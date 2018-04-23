@@ -111,18 +111,30 @@ namespace WinRemoteDesktop
             }            
         }
 
+        enum OperType
+        {
+            Add,
+            Edit
+        }
+
         /// <summary>
         /// 编辑数据
         /// </summary>
-        private void EditListViewDataSource()
+        private void AddOrEditListViewDataSource(OperType type)
         {
-            if (this.betterListView1.SelectedItems.Count == 0) return;
-
-            string serverIp = this.betterListView1.SelectedItems[0].SubItems[0].Text;
             FormDesktop frm = new FormDesktop();
-            frm._Action = "EDIT";
-            frm._ServerIp = serverIp;
+            if (type == OperType.Edit)
+            {
+                if (this.betterListView1.SelectedItems.Count == 0) return;
+                string serverIp = this.betterListView1.SelectedItems[0].SubItems[0].Text;
+                frm._Action = "EDIT";
+                frm._ServerIp = serverIp;
+            }
             frm.ShowDialog();
+            if (frm.DialogResult == DialogResult.OK)
+            {
+                BindsListViewDataSource();
+            }
         }
 
         /// <summary>
@@ -185,11 +197,6 @@ namespace WinRemoteDesktop
             SelectListViewRunRdpc();
         }
 
-        private void tsbRefresh_Click(object sender, EventArgs e)
-        {
-            BindsListViewDataSource();
-        }
-
         private void betterListView1_SelectedItemsChanged(object sender, BetterListViewSelectedItemsChangedEventArgs eventArgs)
         {
             if (this.betterListView1.SelectedItems.Count == 0)
@@ -214,18 +221,17 @@ namespace WinRemoteDesktop
 
         private void tsbAddData_Click(object sender, EventArgs e)
         {
-            FormDesktop frm = new FormDesktop();
-            frm.ShowDialog();
+            AddOrEditListViewDataSource(OperType.Add);
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            EditListViewDataSource();
+            AddOrEditListViewDataSource(OperType.Edit);
         }
 
         private void tsMenuEdit_Click(object sender, EventArgs e)
         {
-            EditListViewDataSource();
+            AddOrEditListViewDataSource(OperType.Edit);
         }
 
         private void tsbDel_Click(object sender, EventArgs e)

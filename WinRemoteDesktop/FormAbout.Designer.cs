@@ -54,7 +54,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 12);
             this.label1.TabIndex = 1;
-            this.label1.Text = "简易远程桌面工具 v1.1.0";
+            this.label1.Text = "简易远程桌面工具 v1.2.0";
             // 
             // label3
             // 
@@ -94,10 +94,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormAbout";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "关于";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
