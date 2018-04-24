@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace WinRemoteDesktop
 {
@@ -6,9 +7,15 @@ namespace WinRemoteDesktop
     {
         public static string dbFile = @"WinRemoteDesktop.db";
 
-        public static void WinMessage(string msg)
+        public static bool IsServerAddress(string s)
         {
-            MessageBox.Show(msg, "操作提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string text1 = @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:?)\d{1,5}$";
+            return Regex.IsMatch(s, text1);
+        }
+
+        public static void WinMessage(string msg, string caption = "操作提示")
+        {
+            MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

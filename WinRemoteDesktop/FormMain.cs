@@ -20,6 +20,7 @@ namespace WinRemoteDesktop
             axMsRdpcArray = new List<string>();
         }
 
+        #region 全局定义
         /// <summary>
         /// 创建远程桌面连接
         /// </summary>
@@ -88,11 +89,6 @@ namespace WinRemoteDesktop
             axMsRdpc.Connect();
         }
 
-        private void AxMsRdpc_OnConnected(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// 启动选中列表行的数据进行远程服务器连接
         /// </summary>
@@ -108,7 +104,7 @@ namespace WinRemoteDesktop
                     this.betterListView1.SelectedItems[i].SubItems[2].Text,
                     this.betterListView1.SelectedItems[i].SubItems[3].Text
                 });
-            }            
+            }
         }
 
         enum OperType
@@ -176,27 +172,29 @@ namespace WinRemoteDesktop
             }
             this.tsItemLabel.Text = string.Format("共 {0} 项", dt.Rows.Count);
         }
+        #endregion
 
+        #region 主窗体
+        // 主窗体-窗体加载
         private void FormMain_Load(object sender, EventArgs e)
         {
             BindsListViewDataSource();
         }
-
-        private void tsbConnect_Click(object sender, EventArgs e)
+        // 主窗体-恢复窗体
+        private void FormMain_SizeChanged(object sender, EventArgs e)
         {
-            SelectListViewRunRdpc();
+            // 隐藏任务栏图标
+            this.ShowInTaskbar = false;
         }
+        #endregion
 
+        #region ListView
+        // ListView-双击打开远程连接
         private void betterListView1_DoubleClick(object sender, EventArgs e)
         {
             SelectListViewRunRdpc();
         }
-
-        private void tsMenuConnect_Click(object sender, EventArgs e)
-        {
-            SelectListViewRunRdpc();
-        }
-
+        // ListView-至少选中一条数据才显示可用菜单项
         private void betterListView1_SelectedItemsChanged(object sender, BetterListViewSelectedItemsChangedEventArgs eventArgs)
         {
             if (this.betterListView1.SelectedItems.Count == 0)
@@ -218,38 +216,30 @@ namespace WinRemoteDesktop
                 this.tsMenuDel.Enabled = true;
             }
         }
+        #endregion
 
+        #region 菜单栏
+        // 菜单栏-连接
+        private void tsbConnect_Click(object sender, EventArgs e)
+        {
+            SelectListViewRunRdpc();
+        }
+        // 菜单栏-添加
         private void tsbAddData_Click(object sender, EventArgs e)
         {
             AddOrEditListViewDataSource(OperType.Add);
         }
-
+        // 菜单栏-编辑
         private void tsbEdit_Click(object sender, EventArgs e)
         {
             AddOrEditListViewDataSource(OperType.Edit);
         }
-
-        private void tsMenuEdit_Click(object sender, EventArgs e)
-        {
-            AddOrEditListViewDataSource(OperType.Edit);
-        }
-
+        // 菜单栏-删除
         private void tsbDel_Click(object sender, EventArgs e)
         {
             DeleteListViewDataSource();
         }
-
-        private void tsMenuDel_Click(object sender, EventArgs e)
-        {
-            DeleteListViewDataSource();
-        }
-
-        private void tsbAbout_Click(object sender, EventArgs e)
-        {
-            FormAbout frm = new FormAbout();
-            frm.ShowDialog();
-        }
-
+        // 菜单栏-全屏模式
         private void tsbFullScreen_Click(object sender, EventArgs e)
         {
             this.isFullScreen = !this.isFullScreen;
@@ -264,13 +254,39 @@ namespace WinRemoteDesktop
                 this.tsbFullScreen.ForeColor = Color.OliveDrab;
             }
         }
-
-        private void FormMain_SizeChanged(object sender, EventArgs e)
+        // 菜单栏-关于
+        private void tsbAbout_Click(object sender, EventArgs e)
         {
-            // 隐藏任务栏图标
-            this.ShowInTaskbar = false;
+            FormAbout frm = new FormAbout();
+            frm.ShowDialog();
         }
+        #endregion
 
+        #region 右键菜单
+        // 右键菜单-连接
+        private void tsMenuConnect_Click(object sender, EventArgs e)
+        {
+            SelectListViewRunRdpc();
+        }
+        // 右键菜单-编辑
+        private void tsMenuEdit_Click(object sender, EventArgs e)
+        {
+            AddOrEditListViewDataSource(OperType.Edit);
+        }
+        // 右键菜单-删除
+        private void tsMenuDel_Click(object sender, EventArgs e)
+        {
+            DeleteListViewDataSource();
+        }
+        #endregion
+
+        #region 托盘菜单
+        // 托盘菜单-双击托盘图标
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.tsMenuNotifyShow_Click(sender, e);
+        }
+        // 托盘菜单-显示窗口
         private void tsMenuNotifyShow_Click(object sender, EventArgs e)
         {
             // 还原窗口
@@ -278,28 +294,33 @@ namespace WinRemoteDesktop
             // 显示任务栏图标
             this.ShowInTaskbar = true;
         }
-
-        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
-        {
-            this.tsMenuNotifyShow_Click(sender, e);
-        }
-
+        // 托盘菜单-退出
         private void tsMenuNotifyExit_Click(object sender, EventArgs e)
         {
             Application.ExitThread();
             Application.Exit();
         }
+        #endregion
 
+        #region 远程桌面组件axMsRdpc
+        // 远程桌面-连接
         private void axMsRdpc_OnConnecting(object sender, EventArgs e)
         {
             axMsRdpc.ConnectingText = axMsRdpc.GetStatusText(Convert.ToUInt32(axMsRdpc.Connected));
         }
-
+        // 远程桌面-连接断开
         private void axMsRdpc_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            axMsRdpc.DisconnectedText = "连接已断开！";
-        }
+            string disconnectedText = string.Format("远程桌面 {0} 连接已断开！", axMsRdpc.Server);
+            axMsRdpc.DisconnectedText = disconnectedText;
+            (axMsRdpc.Parent as Form).Close();
+            Global.WinMessage(disconnectedText, "远程连接");
 
+        }
+        #endregion
+
+        #region 远程桌面窗体axMsRdpcForm
+        // 远程桌面窗体-关闭
         private void axMsRdpcForm_Closed(object sender, FormClosedEventArgs e)
         {
             Form frm = (Form)sender;
@@ -319,5 +340,6 @@ namespace WinRemoteDesktop
                 }
             }
         }
+        #endregion
     }
 }

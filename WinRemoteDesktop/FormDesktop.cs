@@ -14,6 +14,8 @@ namespace WinRemoteDesktop
             InitializeComponent();
         }
 
+        #region 主窗体
+        // 主窗体-加载
         private void FormRemote_Load(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_Action) || string.IsNullOrWhiteSpace(_ServerIp)) return;
@@ -28,7 +30,10 @@ namespace WinRemoteDesktop
                 this.txtRemark.Text = dt.Rows[0][3].ToString();
             }
         }
+        #endregion
 
+        #region 添加/编辑 数据
+        // 保存数据
         private void btnSave_Click(object sender, EventArgs e)
         {
             string ServerIp = this.txtServerIp.Text.Trim();
@@ -38,7 +43,12 @@ namespace WinRemoteDesktop
 
             if (string.IsNullOrWhiteSpace(ServerIp))
             {
-                Global.WinMessage("请输入服务器地址!");
+                Global.WinMessage("请输入服务器IP地址!");
+                return;
+            }
+            if (!Global.IsServerAddress(ServerIp))
+            {
+                Global.WinMessage("服务器IP地址格式不合法!");
                 return;
             }
             if (string.IsNullOrWhiteSpace(UserName))
@@ -61,10 +71,11 @@ namespace WinRemoteDesktop
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
+        // 取消 添加/编辑
         private void txtCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+        #endregion
     }
 }
