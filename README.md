@@ -8,8 +8,3 @@ C# .Net Framework 4.0 开发的一款简易远程桌面管理工具
 
 ![软件首页](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/Images/Main.png)
 ![添加服务器](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/Images/AddDesktop.png)
-
-> 软件下载
-- [v1.2.0](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/WinRemoteDesktop_v1.2.0.zip)
-- [v1.1.0](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/WinRemoteDesktop_v1.1.0.zip)
-- [v1.0.0](https://github.com/wwlsky/WinRemoteDesktop/raw/master/Download/WinRemoteDesktop_v1.0.0.zip)
