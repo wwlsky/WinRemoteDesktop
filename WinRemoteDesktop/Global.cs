@@ -9,7 +9,7 @@ namespace WinRemoteDesktop
 
         public static bool IsServerAddress(string s)
         {
-            string text1 = @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:?)\d{1,5}$";
+            string text1 = @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{1,5})?$"; //(:?)\d{1,5}$
             return Regex.IsMatch(s, text1);
         }
 
