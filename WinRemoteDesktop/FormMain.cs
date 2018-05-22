@@ -36,6 +36,7 @@ namespace WinRemoteDesktop
             axMsRdpcForm.Text = string.Format("{0} ({1})", args[3], ServerIps[0]);
             axMsRdpcForm.Size = new Size(1024, 768);
             axMsRdpcForm.FormClosed += new FormClosedEventHandler(this.axMsRdpcForm_Closed);
+            axMsRdpcForm.SizeChanged += new EventHandler(this.axMsRdpcForm_SizeChanged);
 
             Rectangle ScreenArea = Screen.PrimaryScreen.Bounds;
             // 给axMsRdpc取个名字
@@ -58,6 +59,8 @@ namespace WinRemoteDesktop
             // 绑定连接与释放事件
             axMsRdpc.OnConnecting += new EventHandler(this.axMsRdpc_OnConnecting);
             axMsRdpc.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.axMsRdpc_OnDisconnected);
+            // 绑定窗口改变事件
+            axMsRdpc.OnLeaveFullScreenMode += new EventHandler(this.axMsRdpc_OnLeaveFullScreenMode);
 
             axMsRdpcForm.Controls.Add(axMsRdpc);
             axMsRdpcForm.Show();
@@ -317,6 +320,13 @@ namespace WinRemoteDesktop
             Global.WinMessage(disconnectedText, "远程连接");
 
         }
+        // 远程桌面-窗口改变
+        private void axMsRdpc_OnLeaveFullScreenMode(object sender, EventArgs e)
+        {
+            Form frm = (axMsRdpc.Parent as Form);
+            frm.WindowState = FormWindowState.Normal;
+            frm.Size = new Size(1024, 768);
+        }
         #endregion
 
         #region 远程桌面窗体axMsRdpcForm
@@ -336,6 +346,23 @@ namespace WinRemoteDesktop
                     if ((ctrl as AxMsRdpClient7NotSafeForScripting).Connected != 0)
                     {
                         (ctrl as AxMsRdpClient7NotSafeForScripting).Disconnect();
+                    }
+                }
+            }
+        }
+        // 远程桌面窗体-最大化全屏显示桌面
+        private void axMsRdpcForm_SizeChanged(object sender, EventArgs e)
+        {
+            Form frm = (Form)sender;
+
+            if (frm.WindowState == FormWindowState.Maximized)
+            {
+                foreach (Control ctrl in frm.Controls)
+                {
+                    if (ctrl.GetType().ToString() == "AxMSTSCLib.AxMsRdpClient7NotSafeForScripting")
+                    {
+                        // 设置全屏
+                        (ctrl as AxMsRdpClient7NotSafeForScripting).FullScreen = true;
                     }
                 }
             }
