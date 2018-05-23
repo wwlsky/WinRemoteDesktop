@@ -36,9 +36,8 @@ namespace WinRemoteDesktop
             axMsRdpcForm.Text = string.Format("{0} ({1})", args[3], ServerIps[0]);
             axMsRdpcForm.Size = new Size(1024, 768);
             axMsRdpcForm.FormClosed += new FormClosedEventHandler(this.axMsRdpcForm_Closed);
-            axMsRdpcForm.SizeChanged += new EventHandler(this.axMsRdpcForm_SizeChanged);
 
-            Rectangle ScreenArea = Screen.PrimaryScreen.Bounds;
+            //Rectangle ScreenArea = Screen.PrimaryScreen.Bounds;
             // 给axMsRdpc取个名字
             string _axMsRdpcName = string.Format("axMsRdpc_{0}", ServerIps[0].Replace(".", ""));
             if (axMsRdpcArray.Contains(_axMsRdpcName))
@@ -59,10 +58,9 @@ namespace WinRemoteDesktop
             // 绑定连接与释放事件
             axMsRdpc.OnConnecting += new EventHandler(this.axMsRdpc_OnConnecting);
             axMsRdpc.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.axMsRdpc_OnDisconnected);
-            // 绑定窗口改变事件
-            axMsRdpc.OnLeaveFullScreenMode += new EventHandler(this.axMsRdpc_OnLeaveFullScreenMode);
 
             axMsRdpcForm.Controls.Add(axMsRdpc);
+            axMsRdpcForm.WindowState = FormWindowState.Maximized;
             axMsRdpcForm.Show();
             ((System.ComponentModel.ISupportInitialize)(axMsRdpc)).EndInit();
 
@@ -74,20 +72,25 @@ namespace WinRemoteDesktop
             axMsRdpc.UserName = args[1];
             // 远程端口号
             axMsRdpc.AdvancedSettings7.RDPPort = ServerIps.Length == 1 ? 3389 : Convert.ToInt32(ServerIps[1]);
+            //axMsRdpc.AdvancedSettings7.ContainerHandledFullScreen = 1;
             // 自动控制屏幕显示尺寸
-            //axMsRdpc.AdvancedSettings9.SmartSizing = true;
+            //axMsRdpc.AdvancedSettings7.SmartSizing = true;
             // 启用CredSSP身份验证（有些服务器连接没有反应，需要开启这个）
             axMsRdpc.AdvancedSettings7.EnableCredSspSupport = true;
             // 远程登录密码
             axMsRdpc.AdvancedSettings7.ClearTextPassword = args[2];
+            // 禁用公共模式
+            //axMsRdpc.AdvancedSettings7.PublicMode = false;
             // 颜色位数 8,16,24,32
             axMsRdpc.ColorDepth = 32;
             // 开启全屏 true|flase
             axMsRdpc.FullScreen = this.isFullScreen;
             // 设置远程桌面宽度为显示器宽度
-            axMsRdpc.DesktopWidth = ScreenArea.Width;
+            //axMsRdpc.DesktopWidth = ScreenArea.Width;
+            axMsRdpc.DesktopWidth = axMsRdpcForm.ClientRectangle.Width;
             // 设置远程桌面宽度为显示器高度
-            axMsRdpc.DesktopHeight = ScreenArea.Height;
+            //axMsRdpc.DesktopHeight = ScreenArea.Height;
+            axMsRdpc.DesktopHeight = axMsRdpcForm.ClientRectangle.Height;
             // 远程连接
             axMsRdpc.Connect();
         }
@@ -309,23 +312,19 @@ namespace WinRemoteDesktop
         // 远程桌面-连接
         private void axMsRdpc_OnConnecting(object sender, EventArgs e)
         {
-            axMsRdpc.ConnectingText = axMsRdpc.GetStatusText(Convert.ToUInt32(axMsRdpc.Connected));
+            var _axMsRdp = sender as AxMsRdpClient7NotSafeForScripting;
+            _axMsRdp.ConnectingText = _axMsRdp.GetStatusText(Convert.ToUInt32(_axMsRdp.Connected));
+            _axMsRdp.FindForm().WindowState = FormWindowState.Normal;
         }
         // 远程桌面-连接断开
         private void axMsRdpc_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            string disconnectedText = string.Format("远程桌面 {0} 连接已断开！", axMsRdpc.Server);
-            axMsRdpc.DisconnectedText = disconnectedText;
-            (axMsRdpc.Parent as Form).Close();
+            var _axMsRdp = sender as AxMsRdpClient7NotSafeForScripting;
+            string disconnectedText = string.Format("远程桌面 {0} 连接已断开！", _axMsRdp.Server);
+            _axMsRdp.DisconnectedText = disconnectedText;
+            _axMsRdp.FindForm().Close();
             Global.WinMessage(disconnectedText, "远程连接");
 
-        }
-        // 远程桌面-窗口改变
-        private void axMsRdpc_OnLeaveFullScreenMode(object sender, EventArgs e)
-        {
-            Form frm = (axMsRdpc.Parent as Form);
-            frm.WindowState = FormWindowState.Normal;
-            frm.Size = new Size(1024, 768);
         }
         #endregion
 
@@ -337,32 +336,17 @@ namespace WinRemoteDesktop
             //MessageBox.Show(frm.Controls[0].GetType().ToString());
             foreach (Control ctrl in frm.Controls)
             {
-                //MessageBox.Show((ctrl as AxMSTSCLib.AxMsRdpClient7NotSafeForScripting).Connected.ToString());
+                // 找到当前打开窗口下面的远程桌面
                 if (ctrl.GetType().ToString() == "AxMSTSCLib.AxMsRdpClient7NotSafeForScripting")
                 {
                     // 释放缓存
                     if (axMsRdpcArray.Contains(ctrl.Name)) axMsRdpcArray.Remove(ctrl.Name);
                     // 断开连接
-                    if ((ctrl as AxMsRdpClient7NotSafeForScripting).Connected != 0)
+                    var _axMsRdp = ctrl as AxMsRdpClient7NotSafeForScripting;
+                    if (_axMsRdp.Connected != 0)
                     {
-                        (ctrl as AxMsRdpClient7NotSafeForScripting).Disconnect();
-                    }
-                }
-            }
-        }
-        // 远程桌面窗体-最大化全屏显示桌面
-        private void axMsRdpcForm_SizeChanged(object sender, EventArgs e)
-        {
-            Form frm = (Form)sender;
-
-            if (frm.WindowState == FormWindowState.Maximized)
-            {
-                foreach (Control ctrl in frm.Controls)
-                {
-                    if (ctrl.GetType().ToString() == "AxMSTSCLib.AxMsRdpClient7NotSafeForScripting")
-                    {
-                        // 设置全屏
-                        (ctrl as AxMsRdpClient7NotSafeForScripting).FullScreen = true;
+                        _axMsRdp.Disconnect();
+                        _axMsRdp.Dispose();
                     }
                 }
             }
