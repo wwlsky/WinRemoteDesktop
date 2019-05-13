@@ -7,7 +7,7 @@
     <ProjectGuid>{B1F3FBAA-4A1D-4D07-B088-92137DE1C318}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>WinRemoteDesktop</RootNamespace>
-    <AssemblyName>WinRemoteDesktop</AssemblyName>
+    <AssemblyName>简易远程桌面</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>Google_Desktop_128px_1062979.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterListViewExpress">
@@ -121,7 +121,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon.ico" />
+    <Content Include="Google_Desktop_128px_1062979.ico" />
+    <Content Include="Icon\Google_Desktop_128px_1062979.ico" />
+    <Content Include="Icon\Google_Desktop_256px_1062979.png" />
+    <Content Include="Lib\BetterListViewExpress.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
