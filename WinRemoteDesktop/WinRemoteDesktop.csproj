@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Google_Desktop_128px_1062979.ico</ApplicationIcon>
+    <ApplicationIcon>Icon\Remote.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterListViewExpress">
@@ -121,10 +121,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Google_Desktop_128px_1062979.ico" />
-    <Content Include="Icon\Google_Desktop_128px_1062979.ico" />
-    <Content Include="Icon\Google_Desktop_256px_1062979.png" />
+    <Content Include="Icon\Remote.ico" />
     <Content Include="Lib\BetterListViewExpress.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
